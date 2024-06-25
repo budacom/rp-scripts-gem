@@ -13,5 +13,9 @@ module RpScripts
         end
       end
     end
+
+    initializer "initialize rp scripts" do
+      require 'rp_scripts/activeadmin' if defined? ActiveAdmin
+    end
   end
 end
