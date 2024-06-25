@@ -8,10 +8,9 @@ RSpec.describe RpScripts::Watcher do
   let(:notice) do
     Kubeclient::Resource.new(
       type: type,
-      data: {
+      object: {
         kind: "ConfigMap",
         apiVersion: "v1",
-        script: "puts 'hello world'",
         metadata: {
           name: "kube-root-ca.crt",
           namespace: "rails-operator",
@@ -28,7 +27,7 @@ RSpec.describe RpScripts::Watcher do
           }
         },
         data: {
-          "ca.crt": "cert"
+          script: "puts 'hello world'"
         }
       }
     )

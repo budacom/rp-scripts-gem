@@ -27,8 +27,8 @@ module RpScripts
 
     def build_executor(_notice)
       RpScripts::Executor.new(
-        _notice[:data][:metadata][:annotations]["rp-scripts.buda.com/pull-request"],
-        _notice[:data][:script]
+        _notice[:object][:metadata][:annotations]["rp-scripts.buda.com/pull-request"],
+        _notice[:object][:data][:script]
       )
     end
 
