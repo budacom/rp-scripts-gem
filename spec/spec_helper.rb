@@ -1,12 +1,10 @@
 require 'action_controller'
-require 'active_job'
 require 'active_support/all'
 require 'active_record'
 require 'database_cleaner/active_record'
 require 'factory_bot'
 require 'pry'
 require 'shoulda/matchers'
-require 'sqlite3'
 require './lib/generators/rp_scripts/generator_helper'
 
 Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
@@ -19,7 +17,6 @@ ActiveRecord::Base.establish_connection(
 
 # ActiveRecord::Base.logger = Logger.new($stdout)
 ActiveRecord::Migration.verbose = false
-ActiveJob::Base.queue_adapter = :test
 
 migration_template = File.open("lib/generators/rp_scripts/templates/migration.rb")
 
