@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionpack", [">= 5.0", "< 8.0"]
   spec.add_dependency "activerecord", [">= 5.0", "< 8.0"]
   spec.add_dependency "activesupport", [">= 5.0", "< 8.0"]
+  spec.add_dependency "kubeclient", "~> 4.12.0"
   spec.add_dependency "sentry-ruby", "~> 5.7.0"
   spec.add_development_dependency "bundler", "~> 2.3.26"
   spec.add_development_dependency "database_cleaner-active_record"
