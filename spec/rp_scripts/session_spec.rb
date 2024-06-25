@@ -7,8 +7,7 @@ RSpec.describe RpScripts::Session, type: :model do
     expect(build(:session)).to be_valid
   end
 
-  # describe "validations" do
-  #   it { is_expected.to validate_presence_of(:operation_uuid) }
-  #   it { is_expected.to validate_presence_of(:target_class) }
-  # end
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:identifier) }
+  end
 end
