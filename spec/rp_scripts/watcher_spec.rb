@@ -8,10 +8,9 @@ RSpec.describe RpScripts::Watcher do
   let(:notice) do
     Kubeclient::Resource.new(
       type: type,
-      data: {
+      object: {
         kind: "ConfigMap",
         apiVersion: "v1",
-        script: "puts 'hello world'",
         metadata: {
           name: "kube-root-ca.crt",
           namespace: "rails-operator",
@@ -28,7 +27,7 @@ RSpec.describe RpScripts::Watcher do
           }
         },
         data: {
-          "ca.crt": "cert"
+          script: "puts 'hello world'"
         }
       }
     )
@@ -58,6 +57,29 @@ RSpec.describe RpScripts::Watcher do
 
     context 'when there are no added entities' do
       let(:type) { "DELETED" }
+
+      it 'does not executes the script' do
+        watcher.watch
+        expect(executor).not_to have_received(:safe_run)
+      end
+    end
+
+    context 'when notice is not a rp-scripts notice' do
+      let(:notice) do
+        Kubeclient::Resource.new(
+          type: type,
+          object: {
+            kind: "ConfigMap",
+            apiVersion: "v1",
+            labels: {
+              "buda.com/rp-scripts-nope": "1.0"
+            },
+            data: {
+              script: "puts 'hello world'"
+            }
+          }
+        )
+      end
 
       it 'does not executes the script' do
         watcher.watch
