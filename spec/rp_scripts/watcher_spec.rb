@@ -63,5 +63,28 @@ RSpec.describe RpScripts::Watcher do
         expect(executor).not_to have_received(:safe_run)
       end
     end
+
+    context 'when notice is not a rp-scripts notice' do
+      let(:notice) do
+        Kubeclient::Resource.new(
+          type: type,
+          object: {
+            kind: "ConfigMap",
+            apiVersion: "v1",
+            labels: {
+              "buda.com/rp-scripts-nope": "1.0"
+            },
+            data: {
+              script: "puts 'hello world'"
+            }
+          }
+        )
+      end
+
+      it 'does not executes the script' do
+        watcher.watch
+        expect(executor).not_to have_received(:safe_run)
+      end
+    end
   end
 end

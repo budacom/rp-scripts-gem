@@ -11,6 +11,7 @@ module RpScripts
 
       @watcher = client.watch_entities('configmaps', namespace: fetch_namespace)
       @watcher.each do |notice|
+        next unless script_notice? notice
         next if notice[:type] != 'ADDED'
 
         executor = build_executor(notice)
@@ -24,6 +25,10 @@ module RpScripts
     end
 
     private
+
+    def script_notice?(_notice)
+      _notice[:object][:metadata][:labels][:"buda.com/rp-scripts"].present? rescue false
+    end
 
     def build_executor(_notice)
       RpScripts::Executor.new(
