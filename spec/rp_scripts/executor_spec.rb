@@ -3,7 +3,9 @@ require 'spec_helper'
 RSpec.describe RpScripts::Executor do
   let(:identifier) { '1' }
   let(:script) { "puts 'hello world'" }
-  let(:executor) { described_class.new(identifier, script) }
+  let(:description) { "prints hello world" }
+  let(:reusable) { false }
+  let(:executor) { described_class.new(identifier, script, description, reusable) }
 
   describe '#run' do
     it 'creates a succeful RpScriptsSession' do

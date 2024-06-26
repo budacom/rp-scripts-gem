@@ -20,6 +20,8 @@ RSpec.describe RpScripts::Watcher do
           annotations: {
             "rp-scripts.buda.com/pull-request": "2032",
             "rp-scripts.buda.com/respository": "github.com/budacom/rp-scripts",
+            "rp-scripts.buda.com/description": "script description",
+            "rp-scripts.buda.com/reusable": "true",
             "kubernetes.io/description": "description"
           },
           labels: {
@@ -47,7 +49,8 @@ RSpec.describe RpScripts::Watcher do
 
     it 'creates an Executor with the correct params' do
       watcher.watch
-      expect(RpScripts::Executor).to have_received(:new).with("2032", "puts 'hello world'")
+      expect(RpScripts::Executor).to have_received(:new).with("2032", "puts 'hello world'",
+                                                              "script description", true)
     end
 
     it 'executes the script for added entities' do
