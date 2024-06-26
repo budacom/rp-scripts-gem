@@ -59,6 +59,7 @@ module RpScripts
       RpScripts::Session.create!(
         identifier: @identifier,
         script: @script,
+        description: @description,
         output: @buffer.join("\n"),
         success: true,
         reusable_until: reusable_until
@@ -72,6 +73,7 @@ module RpScripts
       RpScripts::Session.create!(
         identifier: @identifier,
         script: @script,
+        description: @description,
         output: @buffer.join("\n"),
         success: false,
         reusable_until: reusable_until

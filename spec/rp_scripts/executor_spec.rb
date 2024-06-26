@@ -23,6 +23,11 @@ RSpec.describe RpScripts::Executor do
       expect(RpScripts::Session.last.output).to eq "hello world\nfoo bar"
     end
 
+    it 'stores description in session' do
+      executor.run
+      expect(RpScripts::Session.last.description).to eq "prints hello world"
+    end
+
     context 'when execution fails' do
       let(:script) { "raise StandardError, 'foo'" }
 
