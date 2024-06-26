@@ -1,40 +1,35 @@
-**If you're viewing this at https://github.com/collectiveidea/delayed_job_active_record,
-you're reading the documentation for the master branch.
-[View documentation for the latest release
-(4.1.7).](https://github.com/collectiveidea/delayed_job_active_record/tree/v4.1.7)**
+# RP Scripts
 
-# DelayedJob ActiveRecord Backend
+RP Scripts automates script execution in Kubernetes. It monitors and automatically executes scripts from newly created `buda.com/rp-scripts` ConfigMaps.
 
-[![Gem Version](https://img.shields.io/gem/v/delayed_job_active_record.svg)](https://rubygems.org/gems/delayed_job_active_record)
-![CI](https://github.com/collectiveidea/delayed_job_active_record/workflows/CI/badge.svg)
-[![Coverage Status](https://img.shields.io/coveralls/collectiveidea/delayed_job_active_record.svg)](https://coveralls.io/r/collectiveidea/delayed_job_active_record)
+It also provides an Active Admin interface that displays the output from these processed scripts.
 
-## Installation
+## Getting Started
 
-Add the gem to your Gemfile:
+Add this line to your application's Gemfile:
 
-    gem 'delayed_job_active_record'
+```ruby
+gem 'pr-scripts'
+```
 
-Run `bundle install`.
+And then execute:
 
-If you're using Rails, run the generator to create the migration for the
-delayed_job table.
+```bash
+$ bundle
+```
 
-    rails g delayed_job:active_record
-    rake db:migrate
+After that, run the generator:
 
-## Problems locking jobs
+```bash
+$ rails g pr-scripts:install
+```
+Run the task to wacth over new configmaps:
 
-You can try using the legacy locking code. It is usually slower but works better for certain people.
+```bash
+$ rake rp:watch
+```
+### View Script Outputs in the Admin Panel
 
-    Delayed::Backend::ActiveRecord.configuration.reserve_sql_strategy = :default_sql
-
-## Upgrading from 2.x to 3.0.0
-
-If you're upgrading from Delayed Job 2.x, run the upgrade generator to create a
-migration to add a column to your delayed_jobs table.
-
-    rails g delayed_job:upgrade
-    rake db:migrate
-
-That's it. Use [delayed_job as normal](http://github.com/collectiveidea/delayed_job).
+```
+{your_project_url}/admin/rp_scripts_sessions
+```

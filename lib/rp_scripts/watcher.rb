@@ -33,7 +33,9 @@ module RpScripts
     def build_executor(_notice)
       RpScripts::Executor.new(
         _notice[:object][:metadata][:annotations]["rp-scripts.buda.com/pull-request"],
-        _notice[:object][:data][:script]
+        _notice[:object][:data][:script],
+        _notice[:object][:metadata][:annotations]["rp-scripts.buda.com/description"],
+        _notice[:object][:metadata][:annotations]["rp-scripts.buda.com/reusable"].to_s == 'true'
       )
     end
 
