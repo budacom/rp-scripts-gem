@@ -9,7 +9,6 @@ module RpScripts
 
       def puts(_object)
         @buffer << _object.to_s
-        @buffer << "\n"
       end
     end
 
@@ -57,15 +56,28 @@ module RpScripts
     end
 
     def save_success
-      RpScripts::Session.create!(identifier: @identifier, script: @script, output: @buffer.join,
-                                 success: true, reusable_until: reusable_until)
+      RpScripts::Session.create!(
+        identifier: @identifier,
+        script: @script,
+        description: @description,
+        output: @buffer.join("\n"),
+        success: true,
+        reusable_until: reusable_until
+      )
     end
 
     def save_failure(_error)
       @buffer << _error.message
-      @buffer << _error.backtrace
-      RpScripts::Session.create!(identifier: @identifier, script: @script, output: @buffer.join,
-                                 success: false, reusable_until: reusable_until)
+      @buffer += _error.backtrace
+
+      RpScripts::Session.create!(
+        identifier: @identifier,
+        script: @script,
+        description: @description,
+        output: @buffer.join("\n"),
+        success: false,
+        reusable_until: reusable_until
+      )
     end
 
     def reusable_until

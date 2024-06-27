@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe RpScripts::Executor do
   let(:identifier) { '1' }
-  let(:script) { "puts 'hello world'" }
+  let(:script) { "puts 'hello world'; puts 'foo bar'" }
   let(:description) { "prints hello world" }
   let(:reusable) { false }
   let(:executor) { described_class.new(identifier, script, description, reusable) }
@@ -20,7 +20,12 @@ RSpec.describe RpScripts::Executor do
 
     it 'stores output in session' do
       executor.run
-      expect(RpScripts::Session.last.output).to eq "hello world\n"
+      expect(RpScripts::Session.last.output).to eq "hello world\nfoo bar"
+    end
+
+    it 'stores description in session' do
+      executor.run
+      expect(RpScripts::Session.last.description).to eq "prints hello world"
     end
 
     context 'when execution fails' do
@@ -31,9 +36,12 @@ RSpec.describe RpScripts::Executor do
         expect(RpScripts::Session.last.success).to eq false
       end
 
-      it 'stores exception in session' do
+      it 'stores exception message and backtrace in session' do
         executor.run
-        expect(RpScripts::Session.last.output).to include "foo"
+        lines = RpScripts::Session.last.output.split("\n")
+        expect(lines.count).to be > 10
+        expect(lines.first).to eq 'foo'
+        expect(lines.second).to eq "(eval):1:in `eval_script'"
       end
     end
   end

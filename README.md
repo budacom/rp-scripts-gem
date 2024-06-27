@@ -21,7 +21,7 @@ $ bundle
 After that, run the generator:
 
 ```bash
-$ rails g pr-scripts:install
+$ rails g rp_scripts:active_record
 ```
 Run the task to wacth over new configmaps:
 
