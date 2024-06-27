@@ -12,6 +12,7 @@ module RpScripts
       @watcher = client.watch_entities('configmaps', namespace: fetch_namespace)
       @watcher.each do |notice|
         next unless script_notice? notice
+        next unless safe_script? notice
         next if notice[:type] != 'ADDED'
 
         executor = build_executor(notice)
@@ -28,6 +29,11 @@ module RpScripts
 
     def script_notice?(_notice)
       _notice[:object][:metadata][:labels][:"buda.com/rp-scripts"].present? rescue false
+    end
+
+    def safe_script?(_notice)
+      notice_checksum = _notice[:object][:metadata][:annotations]["rp-scripts.buda.com/checksum"]
+      notice_checksum == Digest::SHA256.hexdigest(_notice[:object][:data][:script])
     end
 
     def build_executor(_notice)
