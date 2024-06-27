@@ -5,6 +5,7 @@ RSpec.describe RpScripts::Watcher do
   let(:executor) { instance_double('RpScripts::Executor') }
   let(:watcher) { described_class.new }
   let(:type) { "ADDED" }
+  let(:checksum) { "0ee703b80d0b42b85da69c7f507326837aa46d7814555048e48ca088e2ac30ec" }
   let(:notice) do
     Kubeclient::Resource.new(
       type: type,
@@ -22,6 +23,7 @@ RSpec.describe RpScripts::Watcher do
             "rp-scripts.buda.com/respository": "github.com/budacom/rp-scripts",
             "rp-scripts.buda.com/description": "script description",
             "rp-scripts.buda.com/reusable": "true",
+            "rp-scripts.buda.com/checksum": checksum,
             "kubernetes.io/description": "description"
           },
           labels: {
@@ -83,6 +85,15 @@ RSpec.describe RpScripts::Watcher do
           }
         )
       end
+
+      it 'does not executes the script' do
+        watcher.watch
+        expect(executor).not_to have_received(:safe_run)
+      end
+    end
+
+    context 'when checksum does not match scripts SHA256' do
+      let(:checksum) { "wrong_hash" }
 
       it 'does not executes the script' do
         watcher.watch
