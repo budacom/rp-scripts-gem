@@ -15,7 +15,9 @@ module RpScripts
     end
 
     initializer "initialize rp scripts" do
-      require 'rp_scripts/activeadmin' if defined? ActiveAdmin
+      Rails.application.config.to_prepare do
+        require 'rp_scripts/activeadmin' if defined? ActiveAdmin
+      end
     end
   end
 end
